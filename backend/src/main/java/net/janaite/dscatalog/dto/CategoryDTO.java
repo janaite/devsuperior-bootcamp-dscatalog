@@ -37,7 +37,7 @@ public class CategoryDTO implements Serializable {
 	}
 
 	public void setName(String name) {
-		name = name;
+		this.name = name;
 	}
 
 }
