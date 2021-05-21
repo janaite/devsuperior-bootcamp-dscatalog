@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.janaite.dscatalog.dto.ProductDTO;
-import net.janaite.dscatalog.entities.Category;
 import net.janaite.dscatalog.entities.Product;
 import net.janaite.dscatalog.repositories.CategoryRepository;
 import net.janaite.dscatalog.repositories.ProductRepository;
