@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.janaite.dscatalog.dto.UserDTO;
 import net.janaite.dscatalog.dto.UserInsertDTO;
+import net.janaite.dscatalog.dto.UserUpdateDTO;
 import net.janaite.dscatalog.entities.User;
 import net.janaite.dscatalog.repositories.RoleRepository;
 import net.janaite.dscatalog.repositories.UserRepository;
@@ -56,7 +57,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDTO update(Long id, UserDTO dto) {
+	public UserDTO update(Long id, UserUpdateDTO dto) {
 		try {
 			User entity = repository.getOne(id); // getOne do not access database until you save the entity
 			copyDtoToEntity(dto, entity);
