@@ -1,5 +1,7 @@
 package net.janaite.dscatalog.config;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +12,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+import net.janaite.dscatalog.components.JwtTokenEnhancer;
 
 @Configuration
 @EnableAuthorizationServer
@@ -37,6 +42,9 @@ public class AuthorizatioServerConfig extends AuthorizationServerConfigurerAdapt
 
 	@Autowired
 	private AuthenticationManager authenticationManger;
+	
+	@Autowired
+	private JwtTokenEnhancer tokenEnhancer;
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -55,9 +63,14 @@ public class AuthorizatioServerConfig extends AuthorizationServerConfigurerAdapt
 
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		
+		TokenEnhancerChain chain = new TokenEnhancerChain();
+		chain.setTokenEnhancers(List.of(accessTokenConverter, tokenEnhancer));
+		
 		endpoints.authenticationManager(authenticationManger)
 			.tokenStore(tokenStore)
-			.accessTokenConverter(accessTokenConverter);
+			.accessTokenConverter(accessTokenConverter)
+			.tokenEnhancer(chain);
 	}
 
 }
