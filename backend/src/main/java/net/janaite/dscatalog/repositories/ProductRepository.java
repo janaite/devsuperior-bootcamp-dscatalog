@@ -10,8 +10,8 @@ import net.janaite.dscatalog.entities.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long>{
 	
-	@Query("SELECT obj FROM Product obj "
+	@Query("SELECT DISTINCT obj FROM Product obj "
 			+ "INNER JOIN obj.categories cats "
-			+ "WHERE :category IN cats")
+			+ "WHERE (:category IS NULL OR :category IN cats)")
 	Page<Product> find(Category category, Pageable pageable);
 }
