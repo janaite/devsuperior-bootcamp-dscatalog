@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.janaite.dscatalog.dto.ProductDTO;
 import net.janaite.dscatalog.tests.Factory;
+import net.janaite.dscatalog.tests.TokenUtil;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,16 +28,26 @@ public class ProductResourceIT {
 
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private TokenUtil tokenUtil;
 
 	private Long existingId;
 	private Long nonExistingId;
 	private Long countTotalProducts;
 
+	private String username;
+	private String password;
+
 	@BeforeEach
 	void setUp() throws Exception {
+
+		username = "maria@gmail.com";
+		password = "123456";
+
 		existingId = 1L;
 		nonExistingId = 1000L;
 		countTotalProducts = 25L;
@@ -54,33 +65,43 @@ public class ProductResourceIT {
 		result.andExpect(jsonPath("$.content[2].name").value("PC Gamer Alfa"));
 
 	}
-	
+
 	@Test
 	public void updateShouldReturnProductDTOWhenIdExists() throws Exception {
+
+		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
 		ProductDTO productDTO = Factory.createProductDTO();
 		String jsonBody = objectMapper.writeValueAsString(productDTO);
-		
+
 		final String expectedName = productDTO.getName();
 		final String expectedDescription = productDTO.getDescription();
-		
-		ResultActions result = mockMvc.perform(put("/products/{id}", existingId).content(jsonBody)
-																				.contentType(MediaType.APPLICATION_JSON)
-																				.accept(MediaType.APPLICATION_JSON));
+
+		ResultActions result = mockMvc.perform(
+				put("/products/{id}", existingId)	.header("Authorization", "Bearer " + accessToken)
+													.content(jsonBody)
+													.contentType(MediaType.APPLICATION_JSON)
+													.accept(MediaType.APPLICATION_JSON));
 
 		result.andExpect(status().isOk());
 		result.andExpect(jsonPath("$.id").value(existingId));
 		result.andExpect(jsonPath("$.name").value(expectedName));
 		result.andExpect(jsonPath("$.description").value(expectedDescription));
 	}
-	
+
 	@Test
 	public void updateShouldReturnNotFoundWhenIdDoesNotExists() throws Exception {
+
+		String accessToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
+
 		ProductDTO productDTO = Factory.createProductDTO();
 		String jsonBody = objectMapper.writeValueAsString(productDTO);
-		
-		ResultActions result = mockMvc.perform(put("/products/{id}", nonExistingId).content(jsonBody)
-																				.contentType(MediaType.APPLICATION_JSON)
-																				.accept(MediaType.APPLICATION_JSON));
+
+		ResultActions result = mockMvc.perform(
+				put("/products/{id}", nonExistingId).header("Authorization", "Bearer " + accessToken)
+													.content(jsonBody)
+													.contentType(MediaType.APPLICATION_JSON)
+													.accept(MediaType.APPLICATION_JSON));
 
 		result.andExpect(status().isNotFound());
 	}
