@@ -2,7 +2,7 @@
 
 # JANAITE 20210708
 
-docker build -t janaite/devsuperior-dscatalog .
+docker build -t janaite/devsuperior-dscatalog-db -f Dockerfile-postgres .
 
 docker rm -f devsup_sqlqueires
 
