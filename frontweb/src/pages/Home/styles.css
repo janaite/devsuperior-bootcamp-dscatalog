@@ -2,13 +2,11 @@
   padding: 10px;
   font-size: 20px;
   text-align: center;
-  border: 1px solid red;
 }
 
 .home-card {
   display: flex;
   flex-direction: column-reverse;
-  border: 1px solid orange;
   border-radius: 20px;
 }
 
@@ -17,7 +15,6 @@
   flex-direction: column;
   align-items: center;
   padding: 10px 10px 60px 10px;
-  border: 1px solid blue;
 }
 
 .home-content-container h1 {
@@ -35,7 +32,6 @@
 
 .home-image-container {
   padding: 50px 15px;
-  border: 1px solid purple;
 }
 
 .home-image-container svg {
