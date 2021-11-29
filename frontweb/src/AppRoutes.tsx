@@ -2,7 +2,7 @@ import Navbar from 'components/Navbar';
 import Home from 'pages/Home';
 import Catalog from 'pages/Catalog';
 import Admin from 'pages/Admin';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ProductDetails from 'pages/ProductDetails';
 
 const AppRoutes = () => (
@@ -12,7 +12,11 @@ const AppRoutes = () => (
       <Route path="/" element={<Home />} />
       <Route path="/products" element={<Catalog />} />
       <Route path="/products/:productId" element={<ProductDetails />} />
-      <Route path="/admin" element={<Admin />} />
+      <Route
+        path="/admin"
+        element={<Navigate replace to="/admin/products" />}
+      />
+      <Route path="/admin/*" element={<Admin />} />
     </Routes>
   </BrowserRouter>
 );
