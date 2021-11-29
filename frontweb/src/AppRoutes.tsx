@@ -3,6 +3,7 @@ import Home from 'pages/Home';
 import Catalog from 'pages/Catalog';
 import Admin from 'pages/Admin';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ProductDetails from 'pages/ProductDetails';
 
 const AppRoutes = () => (
   <BrowserRouter>
@@ -10,6 +11,7 @@ const AppRoutes = () => (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/products" element={<Catalog />} />
+      <Route path="/products/:productId" element={<ProductDetails />} />
       <Route path="/admin" element={<Admin />} />
     </Routes>
   </BrowserRouter>
