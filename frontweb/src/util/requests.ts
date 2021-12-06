@@ -65,3 +65,25 @@ export const getAuthData = () => {
   const str = localStorage.getItem(tokenKey) ?? '{}';
   return JSON.parse(str) as LoginResponse;
 };
+
+axios.interceptors.request.use(
+  function (config) {
+    console.log('Interceptor antes da requisicao');
+    return config;
+  },
+  function (error) {
+    console.log('Erro na requisicao');
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.response.use(
+  function (response) {
+    console.log('Interceptor resposta com sucesso');
+    return response;
+  },
+  function (error) {
+    console.log('Interceptor resposta com erro');
+    return Promise.reject(error);
+  }
+);
